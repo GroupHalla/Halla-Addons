@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "catalog": "halla-addons",
+  "generatedAt": "2026-08-28T12:00:00Z",
+  "addons": [
+    {
+      "id": "official.radio-voice",
+      "name": "Voz de rádio policial",
+      "version": "1.0.0",
+      "author": "Halla-DEV",
+      "description": "Simula um comunicador policial no microfone e nas vozes recebidas, com regras separadas para fala normal e sussurros.",
+      "official": true,
+      "platforms": ["desktop", "mobile"],
+      "distribution": "bundled",
+      "capabilities": ["audio.capture", "audio.playback"],
+      "downloadUrl": null,
+      "sha256": null
+    },
+    {
+      "id": "official.talking-overlay",
+      "name": "Overlay oficial da call",
+      "version": "1.0.0",
+      "author": "Halla-DEV",
+      "description": "Mostra no jogo os usuários da call e destaca quem está falando ou sussurrando.",
+      "official": true,
+      "platforms": ["desktop"],
+      "distribution": "bundled",
+      "capabilities": ["connection.read"],
+      "downloadUrl": null,
+      "sha256": null
+    }
+  ]
+}

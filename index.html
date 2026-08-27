@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Central oficial de complementos do Halla — catálogo consultado pelos aplicativos Halla Desktop e Halla Mobile.">
+  <title>Halla — Complementos oficiais</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2318162c'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23a78bfa' stroke-width='2.6'/%3E%3Ccircle cx='16' cy='16' r='3.2' fill='%23a78bfa'/%3E%3C/svg%3E">
+  <style>
+    :root{font-family:Inter,system-ui,sans-serif;color:#f8fafc;background:#090814}
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#292152 0,#090814 48%)}
+    main{width:min(960px,calc(100% - 32px));margin:40px auto}
+    .panel{background:#111020e8;border:1px solid #312e55;border-radius:22px;padding:28px;box-shadow:0 24px 80px #0008}
+    h1{margin:0 0 8px;font-size:clamp(28px,5vw,44px)}
+    h2{margin:36px 0 12px;font-size:22px}
+    p{color:#b8b5d6;line-height:1.6}
+    .status{display:inline-flex;gap:8px;align-items:center;color:#86efac;background:#052e1b;border:1px solid #166534;border-radius:999px;padding:7px 12px;font-weight:700;font-size:14px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:24px}
+    .addon{background:#18162c;border:1px solid #36315b;border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:12px}
+    .addon .head{display:flex;align-items:flex-start;gap:12px}
+    .addon .icon{width:46px;height:46px;flex:none;border-radius:12px;background:#221f3d;border:1px solid #403a6b;display:grid;place-items:center;font-size:23px}
+    .addon strong{font-size:17px;display:block}
+    .addon .meta{color:#9f9bbd;font-size:13px;margin-top:3px;display:block}
+    .tags{display:flex;flex-wrap:wrap;gap:8px}
+    .tag{display:inline-flex;gap:6px;align-items:center;border-radius:999px;padding:5px 11px;font-size:12.5px;font-weight:700;border:1px solid}
+    .tag.desktop{color:#c4b5fd;background:#221c44;border-color:#4c3f8f}
+    .tag.mobile{color:#7dd3fc;background:#0c2a3d;border-color:#155e75}
+    .tag.official{color:#fcd34d;background:#2c2211;border-color:#92700c}
+    .tag.bundled{color:#86efac;background:#052e1b;border-color:#166534}
+    .tag.download{color:#fda4af;background:#2f0f1a;border-color:#9f1239}
+    .caps{display:flex;flex-wrap:wrap;gap:6px}
+    .caps span{font-size:11.5px;color:#a5a1c8;background:#14122700;border:1px dashed #3d3768;border-radius:8px;padding:4px 9px}
+    .addon .desc{margin:0;font-size:14px;flex:1}
+    code{color:#c4b5fd}
+    a{color:#a78bfa}
+    .steps{margin:12px 0 0;padding-left:20px;color:#b8b5d6;line-height:1.9}
+    footer{margin-top:28px;color:#8a86ad;font-size:13px;text-align:center}
+    footer a{margin:0 6px}
+    .err{color:#fda4af}
+  </style>
+</head>
+<body>
+<main>
+  <section class="panel">
+    <span class="status">● Catálogo oficial ativo</span>
+    <h1>Complementos do Halla</h1>
+    <p>Esta é a central oficial de complementos (<em>addons</em>) do Halla. Os aplicativos
+    <strong>Halla Desktop</strong> e <strong>Halla Mobile</strong> consultam este catálogo para
+    instalar e atualizar complementos automaticamente, sem precisar de uma nova versão do
+    aplicativo. Todo pacote é validado por SHA-256 antes da instalação.</p>
+    <div id="addons" class="grid" aria-live="polite"></div>
+    <p style="margin-top:22px">Manifesto consumido pelos aplicativos:
+    <a href="api/v1/addons.json"><code>api/v1/addons.json</code></a></p>
+  </section>
+
+  <section class="panel">
+    <h2 style="margin-top:0">Etiquetas de plataforma</h2>
+    <p>Cada complemento indica onde está disponível:</p>
+    <div class="tags">
+      <span class="tag desktop">🖥️ Desktop</span>
+      <span class="tag mobile">📱 Mobile</span>
+      <span class="tag official">★ Oficial</span>
+      <span class="tag bundled">● Incluído no aplicativo</span>
+      <span class="tag download">⬇ Download disponível</span>
+    </div>
+    <p style="margin-bottom:0">Quando um complemento mostra <strong>Desktop</strong> e
+    <strong>Mobile</strong>, ele funciona nos dois aplicativos. Complementos
+    <em>incluídos no aplicativo</em> já vêm ativáveis nas configurações de Complementos; a
+    atualização automática por este site chega com as próximas versões dos aplicativos.</p>
+  </section>
+
+  <section class="panel">
+    <h2 style="margin-top:0">Como instalar manualmente</h2>
+    <ol class="steps">
+      <li>Baixe o arquivo <code>.halla-addon</code> do complemento desejado (e o <code>.sha256</code>).</li>
+      <li>Abra o Halla Desktop e vá em <strong>Ferramentas → Complementos</strong>.</li>
+      <li>Clique em <strong>Adicionar do catálogo</strong> para escolher da lista, ou
+      <strong>Instalar de arquivo</strong> para usar o pacote baixado.</li>
+      <li>Confirme o aviso de segurança e ative o complemento na aba <strong>Complementos</strong>.</li>
+    </ol>
+    <p style="margin-bottom:0">Complementos nativos executam código no mesmo processo do Halla:
+    instale somente pacotes de autores confiáveis. O Halla sempre mostra o aviso de execução
+    nativa e valida o SHA-256 antes de instalar.</p>
+  </section>
+
+  <footer>
+    <a href="https://github.com/GroupHalla/Halla-Addons" target="_blank" rel="noopener">Repositório</a> ·
+    <a href="https://github.com/GroupHalla/Halla" target="_blank" rel="noopener">Halla Desktop</a> ·
+    <a href="https://github.com/GroupHalla/Halla-Mobile" target="_blank" rel="noopener">Halla Mobile</a>
+  </footer>
+</main>
+
+<script>
+const CAPS = {
+  'connection.read':  'Ler conexões, usuários e canais',
+  'connection.control':'Controlar sua conexão, estado e mensagens',
+  'audio.capture':   'Ler e modificar o áudio do microfone',
+  'audio.playback':  'Ler e modificar vozes recebidas',
+  'audio.spatial':   'Controlar volume, posição 3D e filtros por usuário',
+  'plugin.data':     'Trocar dados do complemento pelo servidor',
+  'ui.notifications':'Mostrar notificações',
+  'ui.actions':      'Adicionar ações e atalhos à interface'
+};
+const ICONS = {
+  'official.radio-voice': '🎙️',
+  'official.talking-overlay': '👁️'
+};
+
+fetch('api/v1/addons.json').then(r => r.json()).then(data => {
+  const root = document.getElementById('addons');
+  for (const addon of data.addons) {
+    const card = document.createElement('article');
+    card.className = 'addon';
+
+    const head = document.createElement('div');
+    head.className = 'head';
+    const icon = document.createElement('div');
+    icon.className = 'icon';
+    icon.textContent = ICONS[addon.id] || '🧩';
+    const titles = document.createElement('div');
+    const strong = document.createElement('strong');
+    strong.textContent = addon.name;
+    const meta = document.createElement('span');
+    meta.className = 'meta';
+    meta.textContent = 'v' + addon.version + ' · ' + addon.author;
+    titles.append(strong, meta);
+    head.append(icon, titles);
+
+    const tags = document.createElement('div');
+    tags.className = 'tags';
+    if (addon.official) {
+      const t = document.createElement('span');
+      t.className = 'tag official'; t.textContent = '★ Oficial';
+      tags.append(t);
+    }
+    for (const platform of addon.platforms || []) {
+      const t = document.createElement('span');
+      if (platform === 'desktop') { t.className = 'tag desktop'; t.textContent = '🖥️ Desktop'; }
+      else if (platform === 'mobile') { t.className = 'tag mobile'; t.textContent = '📱 Mobile'; }
+      tags.append(t);
+    }
+    const dist = document.createElement('span');
+    if (addon.downloadUrl) { dist.className = 'tag download'; dist.textContent = '⬇ Download disponível'; }
+    else { dist.className = 'tag bundled'; dist.textContent = '● Incluído no aplicativo'; }
+    tags.append(dist);
+
+    const desc = document.createElement('p');
+    desc.className = 'desc';
+    desc.textContent = addon.description;
+
+    card.append(head, tags, desc);
+
+    const caps = addon.capabilities || [];
+    if (caps.length) {
+      const chips = document.createElement('div');
+      chips.className = 'caps';
+      for (const cap of caps) {
+        const chip = document.createElement('span');
+        chip.title = cap;
+        chip.textContent = CAPS[cap] || cap;
+        chips.append(chip);
+      }
+      card.append(chips);
+    }
+
+    if (addon.downloadUrl) {
+      const download = document.createElement('a');
+      download.href = addon.downloadUrl;
+      download.textContent = '⬇ Baixar ' + addon.name;
+      download.style.marginTop = '4px';
+      card.append(download);
+    }
+
+    root.append(card);
+  }
+}).catch(() => {
+  const el = document.getElementById('addons');
+  el.textContent = 'Catálogo temporariamente indisponível.';
+  el.className = 'err';
+});
+</script>
+</body>
+</html>
