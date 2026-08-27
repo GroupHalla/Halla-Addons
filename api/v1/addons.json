@@ -6,20 +6,27 @@
     {
       "id": "official.radio-voice",
       "name": "Voz de rádio policial",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "author": "Halla-DEV",
       "description": "Simula um comunicador policial no microfone e nas vozes recebidas, com regras separadas para fala normal e sussurros.",
       "official": true,
-      "platforms": ["desktop", "mobile"],
+      "platforms": [
+        "desktop",
+        "mobile"
+      ],
       "distribution": "bundled",
-      "capabilities": ["audio.capture", "audio.playback"],
+      "capabilities": [
+        "audio.capture",
+        "audio.playback"
+      ],
       "category": "audio",
       "icon": "📻",
-      "longDescription": "Transforma a sua voz em um rádio policial autêntico: filtro de banda estreita, ruído de estática e o clássico squelch no fim de cada transmissão. O efeito é aplicado nos dois sentidos — no seu microfone (o que as outras pessoas ouvem) e nas vozes que você recebe (o que você ouve) — com intensidade e comportamento independentes para fala normal e para sussurros.",
+      "longDescription": "Transforma a sua voz em um rádio policial de verdade: compressão de microfone que deixa a voz sempre no talo, banda estreita de transceptor, distorção de transmissor saturado, ressonância de alto-falante pequeno, estática limitada à banda com estalos de propagação e o clássico squelch — click ao abrir o canal e rajada com bipe no fim de cada transmissão. Aplicado nos dois sentidos, no seu microfone e nas vozes recebidas, com intensidade e comportamento independentes para fala normal e sussurros.",
       "highlights": [
-        "Efeito duplo: microfone e vozes recebidas",
-        "Regras separadas para fala e sussurro",
-        "Intensidade ajustável nas configurações de Complementos"
+        "AGC de microfone: voz sempre no mesmo volume, como num rádio",
+        "Banda estreita + distorção + ressonância de radinho",
+        "Squelch com click de abertura e rajada com bipe no fechamento",
+        "Efeito duplo: microfone e vozes recebidas, com regras separadas para fala e sussurro"
       ],
       "setupSteps": [
         "Abra o Halla e vá em Ferramentas → Complementos",
@@ -36,9 +43,13 @@
       "author": "Halla-DEV",
       "description": "Mostra no jogo os usuários da call e destaca quem está falando ou sussurrando.",
       "official": true,
-      "platforms": ["desktop"],
+      "platforms": [
+        "desktop"
+      ],
       "distribution": "bundled",
-      "capabilities": ["connection.read"],
+      "capabilities": [
+        "connection.read"
+      ],
       "category": "interface",
       "icon": "💬",
       "longDescription": "Uma janela translúcida sempre visível sobre o jogo mostra quem está na call e destaca em tempo real quem está falando ou sussurrando. Você acompanha tudo sem dar alt-tab: os nomes acendem conforme a conversa flui, direto na sua tela.",
