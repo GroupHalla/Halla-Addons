@@ -4,182 +4,875 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="color-scheme" content="dark">
-  <meta name="description" content="Central oficial de complementos do Halla — catálogo consultado pelos aplicativos Halla Desktop e Halla Mobile.">
-  <title>Halla — Complementos oficiais</title>
+  <meta name="description" content="Central oficial de complementos do Halla — pesquise, filtre por plataforma e instale complementos para Halla Desktop e Halla Mobile.">
+  <title>Halla Addons — Complementos oficiais</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2318162c'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23a78bfa' stroke-width='2.6'/%3E%3Ccircle cx='16' cy='16' r='3.2' fill='%23a78bfa'/%3E%3C/svg%3E">
   <style>
-    :root{font-family:Inter,system-ui,sans-serif;color:#f8fafc;background:#090814}
+    :root{
+      --bg:#07060d;
+      --panel:rgba(22,20,38,.62);
+      --panel-solid:#141224;
+      --line:rgba(148,130,240,.13);
+      --line-strong:rgba(167,139,250,.32);
+      --text:#eeecf8;
+      --muted:#a6a1c7;
+      --faint:#7d78a0;
+      --violet:#a78bfa;
+      --violet-soft:#c4b5fd;
+      --violet-deep:#7c5ce6;
+      --cyan:#7dd3fc;
+      --amber:#fcd34d;
+      --green:#86efac;
+      --rose:#fda4af;
+      --radius:20px;
+      --font:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+      --mono:ui-monospace,"Cascadia Code","JetBrains Mono",Consolas,monospace;
+    }
     *{box-sizing:border-box}
-    body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#292152 0,#090814 48%)}
-    main{width:min(960px,calc(100% - 32px));margin:40px auto}
-    .panel{background:#111020e8;border:1px solid #312e55;border-radius:22px;padding:28px;box-shadow:0 24px 80px #0008}
-    h1{margin:0 0 8px;font-size:clamp(28px,5vw,44px)}
-    h2{margin:36px 0 12px;font-size:22px}
-    p{color:#b8b5d6;line-height:1.6}
-    .status{display:inline-flex;gap:8px;align-items:center;color:#86efac;background:#052e1b;border:1px solid #166534;border-radius:999px;padding:7px 12px;font-weight:700;font-size:14px}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:24px}
-    .addon{background:#18162c;border:1px solid #36315b;border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:12px}
-    .addon .head{display:flex;align-items:flex-start;gap:12px}
-    .addon .icon{width:46px;height:46px;flex:none;border-radius:12px;background:#221f3d;border:1px solid #403a6b;display:grid;place-items:center;font-size:23px}
-    .addon strong{font-size:17px;display:block}
-    .addon .meta{color:#9f9bbd;font-size:13px;margin-top:3px;display:block}
-    .tags{display:flex;flex-wrap:wrap;gap:8px}
-    .tag{display:inline-flex;gap:6px;align-items:center;border-radius:999px;padding:5px 11px;font-size:12.5px;font-weight:700;border:1px solid}
-    .tag.desktop{color:#c4b5fd;background:#221c44;border-color:#4c3f8f}
-    .tag.mobile{color:#7dd3fc;background:#0c2a3d;border-color:#155e75}
-    .tag.official{color:#fcd34d;background:#2c2211;border-color:#92700c}
-    .tag.bundled{color:#86efac;background:#052e1b;border-color:#166534}
-    .tag.download{color:#fda4af;background:#2f0f1a;border-color:#9f1239}
-    .caps{display:flex;flex-wrap:wrap;gap:6px}
-    .caps span{font-size:11.5px;color:#a5a1c8;background:#14122700;border:1px dashed #3d3768;border-radius:8px;padding:4px 9px}
-    .addon .desc{margin:0;font-size:14px;flex:1}
-    code{color:#c4b5fd}
-    a{color:#a78bfa}
-    .steps{margin:12px 0 0;padding-left:20px;color:#b8b5d6;line-height:1.9}
-    footer{margin-top:28px;color:#8a86ad;font-size:13px;text-align:center}
-    footer a{margin:0 6px}
-    .err{color:#fda4af}
+    html{scroll-behavior:smooth;scroll-padding-top:86px}
+    body{
+      margin:0;font-family:var(--font);color:var(--text);background:var(--bg);
+      -webkit-font-smoothing:antialiased;overflow-x:hidden;
+    }
+    ::selection{background:rgba(167,139,250,.35)}
+
+    /* ---------- fundo: aurora + grade de pontos ---------- */
+    .bg-fx{position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none}
+    .blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.5}
+    .blob.a{width:640px;height:640px;top:-260px;left:-160px;background:radial-gradient(circle,#5b3fd4 0%,transparent 65%);animation:drift 22s ease-in-out infinite alternate}
+    .blob.b{width:560px;height:560px;top:-180px;right:-180px;background:radial-gradient(circle,#155e75 0%,transparent 65%);opacity:.35;animation:drift 26s ease-in-out infinite alternate-reverse}
+    .blob.c{width:700px;height:700px;top:46vh;left:38vw;background:radial-gradient(circle,#3b2b7a 0%,transparent 65%);opacity:.30;animation:drift 30s ease-in-out infinite alternate}
+    @keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(70px,50px) scale(1.12)}}
+    .dots{
+      position:fixed;inset:0;z-index:-1;pointer-events:none;
+      background-image:radial-gradient(rgba(196,181,253,.10) 1px,transparent 1px);
+      background-size:34px 34px;
+      -webkit-mask-image:radial-gradient(ellipse 90% 55% at 50% 0%,#000 25%,transparent 78%);
+      mask-image:radial-gradient(ellipse 90% 55% at 50% 0%,#000 25%,transparent 78%);
+    }
+    @media (prefers-reduced-motion:reduce){
+      .blob{animation:none}
+      *{animation-duration:.01ms!important;transition-duration:.01ms!important}
+    }
+
+    .wrap{width:min(1120px,calc(100% - 40px));margin:0 auto}
+
+    /* ---------- barra de navegação ---------- */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:50;
+      background:rgba(9,8,17,.72);backdrop-filter:blur(16px) saturate(1.5);-webkit-backdrop-filter:blur(16px) saturate(1.5);
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .nav-inner{display:flex;align-items:center;gap:14px;height:64px}
+    .brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--text);margin-right:6px}
+    .brand-mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#241f45,#171331);border:1px solid var(--line-strong);display:grid;place-items:center;flex:none}
+    .brand-name{font-weight:800;font-size:17px;letter-spacing:-.02em}
+    .brand-name em{font-style:normal;color:var(--violet)}
+    .pill-official{
+      display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+      color:var(--amber);background:rgba(252,211,77,.08);border:1px solid rgba(252,211,77,.28);
+      padding:4px 9px;border-radius:999px;
+    }
+    .nav-links{display:flex;gap:2px;margin-left:auto}
+    .nav-links a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:600;padding:8px 13px;border-radius:10px;transition:.18s}
+    .nav-links a:hover{color:var(--text);background:rgba(167,139,250,.10)}
+    .nav-links a.gh{display:inline-flex;align-items:center;gap:7px}
+    .nav-links a.gh:hover{color:var(--violet-soft)}
+
+    /* ---------- hero ---------- */
+    .hero{padding:150px 0 34px;text-align:center;position:relative}
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--violet-soft);
+      border:1px solid var(--line-strong);background:rgba(124,92,230,.12);
+      padding:7px 15px;border-radius:999px;margin-bottom:26px;
+    }
+    .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:pulse 2.2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+    h1.display{
+      margin:0 0 18px;font-size:clamp(38px,6.4vw,66px);line-height:1.06;letter-spacing:-.035em;font-weight:800;
+    }
+    .grad{
+      background:linear-gradient(92deg,#c4b5fd 5%,#a78bfa 40%,#7dd3fc 95%);
+      -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
+    }
+    .hero-sub{max-width:640px;margin:0 auto 34px;color:var(--muted);font-size:clamp(15px,1.8vw,17.5px);line-height:1.65}
+    .hero-sub strong{color:#d6d2f0;font-weight:600}
+
+    /* ---------- busca ---------- */
+    .searchwrap{max-width:660px;margin:0 auto;position:relative}
+    .search{
+      display:flex;align-items:center;gap:12px;height:58px;padding:0 18px;
+      background:rgba(18,16,32,.78);border:1px solid var(--line-strong);border-radius:17px;
+      box-shadow:0 16px 50px -14px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.05);
+      transition:border-color .2s,box-shadow .2s;backdrop-filter:blur(10px);
+    }
+    .search:focus-within{border-color:rgba(167,139,250,.65);box-shadow:0 0 0 4px rgba(124,92,230,.16),0 18px 54px -14px rgba(124,92,230,.38)}
+    .search svg{flex:none;opacity:.55}
+    .search input{
+      flex:1;min-width:0;background:none;border:none;outline:none;color:var(--text);
+      font:500 16px var(--font);
+    }
+    .search input::placeholder{color:#8d88b3}
+    .kbd{
+      flex:none;font:600 11.5px var(--mono);color:var(--faint);
+      border:1px solid rgba(255,255,255,.13);border-bottom-width:2px;border-radius:7px;padding:3px 8px;background:rgba(255,255,255,.04);
+    }
+    .search-clear{
+      flex:none;display:none;width:30px;height:30px;border-radius:9px;border:none;cursor:pointer;
+      background:rgba(255,255,255,.1);color:#c9c5e6;font-size:15px;line-height:1;transition:.15s;
+    }
+    .search-clear:hover{background:rgba(255,255,255,.18);color:#fff}
+    .search-clear.show{display:block}
+    .searchwrap:not(:focus-within) .kbd.hide-when-text{}
+
+    /* ---------- estatísticas ---------- */
+    .stats{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:30px}
+    .stat{
+      display:flex;align-items:center;gap:10px;padding:11px 18px;border-radius:14px;
+      background:var(--panel);border:1px solid var(--line);font-size:13.5px;color:var(--muted);font-weight:500;
+    }
+    .stat b{color:var(--text);font-weight:700}
+    .stat .sico{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;flex:none;background:rgba(124,92,230,.14);color:var(--violet-soft)}
+
+    /* ---------- seções ---------- */
+    .section{padding:64px 0 8px}
+    .section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:22px;flex-wrap:wrap}
+    .section-title{margin:0;font-size:clamp(24px,3vw,31px);letter-spacing:-.03em;font-weight:800;display:flex;align-items:center;gap:12px}
+    .section-title .count{
+      font:700 13px var(--font);color:var(--violet-soft);background:rgba(124,92,230,.14);
+      border:1px solid var(--line-strong);border-radius:999px;padding:5px 12px;letter-spacing:0;
+    }
+    .section-sub{margin:8px 0 0;color:var(--muted);font-size:15px}
+
+    /* ---------- barra de filtros ---------- */
+    .toolbar{
+      display:flex;flex-wrap:wrap;gap:12px;align-items:center;
+      background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:12px 14px;margin-bottom:22px;
+      backdrop-filter:blur(8px);
+    }
+    .toolbar-label{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);margin:0 6px 0 4px}
+    .seg{display:flex;gap:5px;flex-wrap:wrap}
+    .chip{
+      display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 15px;border-radius:11px;cursor:pointer;
+      border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.035);color:var(--muted);
+      font:600 13.5px var(--font);transition:.18s;user-select:none;
+    }
+    .chip:hover{color:var(--text);border-color:rgba(167,139,250,.4);background:rgba(124,92,230,.10)}
+    .chip.active{
+      background:linear-gradient(135deg,#b09aff,#7c5ce6);border-color:transparent;color:#171030;
+      box-shadow:0 6px 20px -6px rgba(124,92,230,.55);
+    }
+    .chip .n{font:700 11px var(--mono);opacity:.75;background:rgba(0,0,0,.18);border-radius:6px;padding:2px 6px}
+    .chip:not(.active) .n{background:rgba(255,255,255,.07);opacity:1;color:var(--muted)}
+    .chip.active .n{color:#171030}
+    .spacer{flex:1}
+    .sortwrap{display:flex;align-items:center;gap:9px}
+    select{
+      height:36px;border-radius:11px;border:1px solid rgba(255,255,255,.1);background:rgba(18,16,32,.9);
+      color:var(--text);font:600 13px var(--font);padding:0 10px;cursor:pointer;outline:none;
+    }
+    select:focus{border-color:var(--line-strong)}
+    .activebar{
+      display:none;align-items:center;gap:10px;margin:-8px 0 18px;font-size:13px;color:var(--muted);flex-wrap:wrap;
+    }
+    .activebar.show{display:flex}
+    .activebar .clearbtn{
+      cursor:pointer;border:none;border-radius:9px;padding:6px 13px;font:700 12.5px var(--font);
+      color:#f5b2c0;background:rgba(244,63,94,.1);border:1px solid rgba(244,63,94,.3);transition:.15s;
+    }
+    .activebar .clearbtn:hover{background:rgba(244,63,94,.2)}
+
+    /* ---------- grade de cards ---------- */
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px}
+    .card{
+      position:relative;display:flex;flex-direction:column;gap:14px;padding:22px;border-radius:var(--radius);
+      background:linear-gradient(180deg,rgba(28,25,50,.72),rgba(16,14,29,.72));
+      border:1px solid var(--line);cursor:pointer;
+      transition:transform .22s cubic-bezier(.2,.7,.3,1),border-color .22s,box-shadow .22s;
+      animation:cardin .5s cubic-bezier(.2,.7,.3,1) backwards;animation-delay:calc(var(--i,0)*70ms);
+    }
+    @keyframes cardin{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
+    .card:hover{
+      transform:translateY(-5px);border-color:rgba(167,139,250,.5);
+      box-shadow:0 22px 60px -18px rgba(124,92,230,.42),0 0 0 1px rgba(167,139,250,.18);
+    }
+    .card-head{display:flex;gap:14px;align-items:flex-start}
+    .ico{
+      width:54px;height:54px;flex:none;border-radius:15px;display:grid;place-items:center;font-size:27px;
+      background:linear-gradient(135deg,rgba(124,92,230,.3),rgba(59,43,122,.25));
+      border:1px solid rgba(167,139,250,.3);transition:transform .25s;
+    }
+    .card:hover .ico{transform:scale(1.07) rotate(-3deg)}
+    .ico.cat-interface{background:linear-gradient(135deg,rgba(21,94,117,.35),rgba(14,42,66,.3));border-color:rgba(125,211,252,.32)}
+    .card-id{flex:1;min-width:0}
+    .card-name{display:flex;align-items:center;gap:8px;font-size:17.5px;font-weight:700;letter-spacing:-.015em;line-height:1.25}
+    .verified{flex:none;color:var(--violet);display:inline-flex}
+    .card-by{margin-top:4px;font-size:13px;color:var(--faint);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .ver{font:600 11.5px var(--mono);color:#b9b3e6;background:rgba(167,139,250,.1);border:1px solid var(--line);border-radius:7px;padding:2.5px 7px}
+    .card-desc{margin:0;color:var(--muted);font-size:14px;line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .caps{display:flex;flex-wrap:wrap;gap:7px}
+    .cap-chip{
+      font-size:11.5px;font-weight:600;color:#b7b1dd;background:rgba(124,92,230,.09);
+      border:1px dashed rgba(148,130,240,.28);border-radius:8px;padding:4.5px 9px;
+    }
+    .card-foot{display:flex;align-items:center;gap:8px;margin-top:auto;padding-top:14px;border-top:1px solid rgba(255,255,255,.055)}
+    .pl-badge{
+      display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;border-radius:9px;padding:5px 10px;
+    }
+    .pl-badge.desktop{color:#c4b5fd;background:rgba(124,92,230,.13);border:1px solid rgba(148,120,240,.32)}
+    .pl-badge.mobile{color:#7dd3fc;background:rgba(14,116,144,.16);border:1px solid rgba(14,116,144,.42)}
+    .pl-badge.bundled{color:var(--green);background:rgba(4,46,26,.35);border:1px solid rgba(22,101,52,.5);margin-left:auto}
+    .pl-badge.downloadable{color:var(--rose);background:rgba(159,18,57,.12);border:1px solid rgba(159,18,57,.45);margin-left:auto}
+    .card-arrow{
+      margin-left:auto;flex:none;width:32px;height:32px;border-radius:10px;display:grid;place-items:center;
+      color:var(--faint);border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.03);transition:.18s;
+    }
+    .card:hover .card-arrow{color:var(--violet-soft);border-color:rgba(167,139,250,.45);transform:translateX(2px)}
+    mark{background:rgba(167,139,250,.28);color:#efeaff;border-radius:4px;padding:0 3px}
+
+    /* ---------- estado vazio ---------- */
+    .empty{display:none;text-align:center;padding:70px 20px;color:var(--muted)}
+    .empty.show{display:block;animation:cardin .4s backwards}
+    .empty .big{font-size:52px;display:block;margin-bottom:14px;filter:grayscale(.25)}
+    .empty h3{margin:0 0 8px;font-size:20px;color:var(--text)}
+    .empty p{margin:0 0 20px;font-size:14.5px}
+    .empty .try{display:flex;gap:9px;justify-content:center;flex-wrap:wrap}
+
+    /* ---------- como funciona ---------- */
+    .steps3{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+    .step{
+      padding:26px;border-radius:var(--radius);background:var(--panel);border:1px solid var(--line);position:relative;overflow:hidden;
+      transition:border-color .2s,transform .2s;
+    }
+    .step:hover{border-color:rgba(167,139,250,.4);transform:translateY(-3px)}
+    .step .num{
+      position:absolute;top:14px;right:18px;font:800 44px var(--mono);color:rgba(167,139,250,.13);line-height:1;
+    }
+    .step .s-ico{
+      width:46px;height:46px;border-radius:13px;display:grid;place-items:center;margin-bottom:16px;
+      background:linear-gradient(135deg,rgba(124,92,230,.26),rgba(59,43,122,.18));border:1px solid rgba(167,139,250,.3);color:var(--violet-soft);
+    }
+    .step h3{margin:0 0 9px;font-size:17px;letter-spacing:-.01em}
+    .step p{margin:0;color:var(--muted);font-size:14px;line-height:1.65}
+    .step p code{font:600 12px var(--mono);color:var(--violet-soft);background:rgba(124,92,230,.1);padding:2px 6px;border-radius:6px}
+
+    /* ---------- segurança ---------- */
+    .security{
+      display:flex;gap:22px;align-items:flex-start;padding:28px;border-radius:var(--radius);
+      background:linear-gradient(120deg,rgba(4,46,26,.25),rgba(22,20,38,.6));
+      border:1px solid rgba(22,101,52,.32);
+    }
+    .security .shield{
+      width:56px;height:56px;flex:none;border-radius:16px;display:grid;place-items:center;
+      background:rgba(134,239,172,.1);border:1px solid rgba(22,101,52,.4);color:var(--green);
+    }
+    .security h3{margin:2px 0 8px;font-size:18px}
+    .security p{margin:0 0 10px;color:var(--muted);font-size:14px;line-height:1.65}
+    .security p:last-child{margin:0}
+    .security b{color:#cdebdb;font-weight:600}
+
+    /* ---------- rodapé ---------- */
+    footer{margin-top:80px;border-top:1px solid rgba(255,255,255,.06);padding:34px 0 44px}
+    .foot{display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;color:var(--faint);font-size:13.5px}
+    .foot .l{display:flex;align-items:center;gap:10px}
+    .foot a{color:var(--muted);text-decoration:none;font-weight:600;transition:.15s}
+    .foot a:hover{color:var(--violet-soft)}
+    .foot .links{display:flex;gap:20px;flex-wrap:wrap}
+
+    /* ---------- modal ---------- */
+    .backdrop{
+      position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:22px;
+      background:rgba(5,4,12,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    }
+    .backdrop.open{display:flex;animation:fadein .22s}
+    @keyframes fadein{from{opacity:0}to{opacity:1}}
+    .modal{
+      width:min(680px,100%);max-height:min(86vh,860px);overflow-y:auto;position:relative;
+      border-radius:24px;padding:30px;border:1px solid var(--line-strong);
+      background:linear-gradient(180deg,#1b1832,#12101f);
+      box-shadow:0 40px 120px -20px rgba(0,0,0,.8);animation:pop .28s cubic-bezier(.2,.8,.3,1.1);
+    }
+    @keyframes pop{from{opacity:0;transform:translateY(26px) scale(.96)}to{opacity:1;transform:none}}
+    .modal::-webkit-scrollbar{width:10px}
+    .modal::-webkit-scrollbar-thumb{background:rgba(167,139,250,.25);border-radius:8px;border:3px solid #12101f}
+    .modal-close{
+      position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:11px;cursor:pointer;
+      border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:var(--muted);display:grid;place-items:center;transition:.15s;
+    }
+    .modal-close:hover{color:var(--text);background:rgba(255,255,255,.12)}
+    .modal-head{display:flex;gap:16px;align-items:center;margin-bottom:6px}
+    .modal-head .ico{width:62px;height:62px;font-size:31px;border-radius:17px}
+    .modal-title{font-size:23px;font-weight:800;letter-spacing:-.02em;display:flex;align-items:center;gap:9px;margin:0}
+    .modal-by{margin-top:5px;font-size:13.5px;color:var(--faint)}
+    .modal-badges{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 4px}
+    .tagpill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;border-radius:999px;padding:5.5px 12px}
+    .tagpill.official{color:var(--amber);background:rgba(252,211,77,.09);border:1px solid rgba(252,211,77,.3)}
+    .tagpill.desktop{color:#c4b5fd;background:rgba(124,92,230,.13);border:1px solid rgba(148,120,240,.32)}
+    .tagpill.mobile{color:#7dd3fc;background:rgba(14,116,144,.16);border:1px solid rgba(14,116,144,.42)}
+    .tagpill.version{color:#b9b3e6;background:rgba(167,139,250,.09);border:1px solid var(--line);font-family:var(--mono);font-weight:600}
+    .modal-desc{color:#c9c5e4;font-size:15px;line-height:1.75;margin:14px 0 0}
+    .modal h4{
+      margin:26px 0 12px;font-size:12px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--faint);
+      display:flex;align-items:center;gap:9px;
+    }
+    .modal h4::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(167,139,250,.22),transparent)}
+    .hl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
+    .hl li{display:flex;gap:11px;color:var(--muted);font-size:14.5px;line-height:1.55;align-items:flex-start}
+    .hl li::before{content:"✦";color:var(--violet);font-size:13px;margin-top:2px;flex:none}
+    .perms{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:9px}
+    .perm{
+      display:flex;gap:11px;align-items:flex-start;padding:12px 14px;border-radius:13px;font-size:13.5px;color:var(--muted);line-height:1.5;
+      background:rgba(124,92,230,.06);border:1px solid var(--line);
+    }
+    .perm svg{flex:none;margin-top:1px;color:var(--violet);opacity:.8}
+    .setup{list-style:none;margin:0;padding:0;counter-reset:st;display:flex;flex-direction:column;gap:11px}
+    .setup li{
+      counter-increment:st;display:flex;gap:13px;align-items:flex-start;color:var(--muted);font-size:14.5px;line-height:1.55;
+    }
+    .setup li::before{
+      content:counter(st);flex:none;width:26px;height:26px;border-radius:9px;display:grid;place-items:center;
+      font:700 12.5px var(--mono);color:var(--violet-soft);background:rgba(124,92,230,.13);border:1px solid var(--line-strong);margin-top:1px;
+    }
+    .dist-note{
+      display:flex;gap:13px;align-items:flex-start;margin-top:4px;padding:15px 17px;border-radius:15px;font-size:13.5px;line-height:1.6;
+      color:var(--green);background:rgba(4,46,26,.22);border:1px solid rgba(22,101,52,.38);
+    }
+    .dist-note.dl{color:var(--rose);background:rgba(159,18,57,.08);border-color:rgba(159,18,57,.35)}
+    .dist-note svg{flex:none;margin-top:2px}
+    .dist-note code{font:600 12px var(--mono);color:inherit;opacity:.85}
+    .dl-btn{
+      display:inline-flex;align-items:center;gap:9px;margin-top:14px;text-decoration:none;cursor:pointer;border:none;
+      font:700 14px var(--font);color:#171030;padding:12px 22px;border-radius:13px;
+      background:linear-gradient(135deg,#b09aff,#7c5ce6);box-shadow:0 10px 30px -8px rgba(124,92,230,.55);transition:.18s;
+    }
+    .dl-btn:hover{transform:translateY(-2px);box-shadow:0 14px 36px -8px rgba(124,92,230,.65)}
+
+    .reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.3,1)}
+    .reveal.in{opacity:1;transform:none}
+
+    /* ---------- responsivo ---------- */
+    @media (max-width:760px){
+      .nav-links a:not(.gh){display:none}
+      .hero{padding-top:118px}
+      .toolbar{gap:9px;padding:11px}
+      .toolbar-label{display:none}
+      .stats{gap:9px}
+      .stat{padding:9px 13px;font-size:12.5px}
+      .stat .sico{display:none}
+      .grid{grid-template-columns:1fr}
+      .security{flex-direction:column;gap:14px}
+      .kbd{display:none}
+    }
   </style>
 </head>
 <body>
-<main>
-  <section class="panel">
-    <span class="status">● Catálogo oficial ativo</span>
-    <h1>Complementos do Halla</h1>
-    <p>Esta é a central oficial de complementos (<em>addons</em>) do Halla. Os aplicativos
-    <strong>Halla Desktop</strong> e <strong>Halla Mobile</strong> consultam este catálogo para
-    instalar e atualizar complementos automaticamente, sem precisar de uma nova versão do
-    aplicativo. Todo pacote é validado por SHA-256 antes da instalação.</p>
-    <div id="addons" class="grid" aria-live="polite"></div>
-    <p style="margin-top:22px">Manifesto consumido pelos aplicativos:
-    <a href="api/v1/addons.json"><code>api/v1/addons.json</code></a></p>
-  </section>
+  <div class="bg-fx" aria-hidden="true">
+    <div class="blob a"></div><div class="blob b"></div><div class="blob c"></div>
+  </div>
+  <div class="dots" aria-hidden="true"></div>
 
-  <section class="panel">
-    <h2 style="margin-top:0">Etiquetas de plataforma</h2>
-    <p>Cada complemento indica onde está disponível:</p>
-    <div class="tags">
-      <span class="tag desktop">🖥️ Desktop</span>
-      <span class="tag mobile">📱 Mobile</span>
-      <span class="tag official">★ Oficial</span>
-      <span class="tag bundled">● Incluído no aplicativo</span>
-      <span class="tag download">⬇ Download disponível</span>
+  <nav class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#top">
+        <span class="brand-mark">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2.6" fill="#a78bfa" stroke="none"/></svg>
+        </span>
+        <span class="brand-name">Halla <em>Addons</em></span>
+      </a>
+      <span class="pill-official">★ Oficial</span>
+      <div class="nav-links">
+        <a href="#catalogo">Catálogo</a>
+        <a href="#como-funciona">Como funciona</a>
+        <a href="#seguranca">Segurança</a>
+        <a class="gh" href="https://github.com/GroupHalla/Halla-Addons" target="_blank" rel="noopener">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55v-2.15c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.75 2.69 1.25 3.34.95.1-.74.4-1.25.72-1.54-2.55-.29-5.23-1.28-5.23-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.25 5.66.41.36.77 1.05.77 2.13v3.16c0 .3.21.67.8.55A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+          GitHub
+        </a>
+      </div>
     </div>
-    <p style="margin-bottom:0">Quando um complemento mostra <strong>Desktop</strong> e
-    <strong>Mobile</strong>, ele funciona nos dois aplicativos. Complementos
-    <em>incluídos no aplicativo</em> já vêm ativáveis nas configurações de Complementos; a
-    atualização automática por este site chega com as próximas versões dos aplicativos.</p>
-  </section>
+  </nav>
 
-  <section class="panel">
-    <h2 style="margin-top:0">Como instalar manualmente</h2>
-    <ol class="steps">
-      <li>Baixe o arquivo <code>.halla-addon</code> do complemento desejado (e o <code>.sha256</code>).</li>
-      <li>Abra o Halla Desktop e vá em <strong>Ferramentas → Complementos</strong>.</li>
-      <li>Clique em <strong>Adicionar do catálogo</strong> para escolher da lista, ou
-      <strong>Instalar de arquivo</strong> para usar o pacote baixado.</li>
-      <li>Confirme o aviso de segurança e ative o complemento na aba <strong>Complementos</strong>.</li>
-    </ol>
-    <p style="margin-bottom:0">Complementos nativos executam código no mesmo processo do Halla:
-    instale somente pacotes de autores confiáveis. O Halla sempre mostra o aviso de execução
-    nativa e valida o SHA-256 antes de instalar.</p>
-  </section>
+  <header class="hero" id="top">
+    <div class="wrap">
+      <span class="eyebrow"><span class="dot"></span> Central oficial de complementos do Halla</span>
+      <h1 class="display">Deixe o Halla<br>com a <span class="grad">sua cara</span>.</h1>
+      <p class="hero-sub">Complementos oficiais para <strong>Halla Desktop</strong> e <strong>Halla Mobile</strong>.
+        Os aplicativos consultam este catálogo e instalam ou atualizam tudo automaticamente —
+        <strong>sem precisar baixar uma nova versão do app</strong>.</p>
+
+      <div class="searchwrap">
+        <label class="search" for="q">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#c4b5fd" stroke-width="2.1" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
+          <input id="q" type="text" placeholder="Pesquisar por nome, função ou permissão…" autocomplete="off" spellcheck="false">
+          <button class="search-clear" id="qclear" type="button" title="Limpar busca" aria-label="Limpar busca">✕</button>
+          <span class="kbd">/</span>
+        </label>
+      </div>
+
+      <div class="stats" id="stats"></div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section wrap" id="catalogo">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Catálogo <span class="count" id="resultcount">…</span></h2>
+          <p class="section-sub" id="resultsub">Filtre por plataforma ou categoria, ou pesquise acima.</p>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <span class="toolbar-label">Plataforma</span>
+        <div class="seg" id="seg-platform"></div>
+        <span class="toolbar-label">Categoria</span>
+        <div class="seg" id="seg-category"></div>
+        <div class="spacer"></div>
+        <div class="sortwrap">
+          <span class="toolbar-label">Ordenar</span>
+          <select id="sort" aria-label="Ordenar por">
+            <option value="name">Nome (A–Z)</option>
+            <option value="recent">Mais recentes</option>
+            <option value="platform">Plataforma</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="activebar" id="activebar">
+        <span id="activetext"></span>
+        <button class="clearbtn" id="clearall" type="button">✕ Limpar filtros</button>
+      </div>
+
+      <div class="grid" id="grid" aria-live="polite"></div>
+
+      <div class="empty" id="empty">
+        <span class="big">🔎</span>
+        <h3>Nenhum complemento encontrado</h3>
+        <p>Tente outro termo ou limpar os filtros ativos.</p>
+        <div class="try" id="trychips"></div>
+      </div>
+    </section>
+
+    <section class="section wrap" id="como-funciona">
+      <div class="section-head"><div>
+        <h2 class="section-title">Como funciona</h2>
+        <p class="section-sub">Do catálogo ao seu aplicativo, sem reinstalar nada.</p>
+      </div></div>
+      <div class="steps3">
+        <div class="step reveal">
+          <span class="num">01</span>
+          <div class="s-ico">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7Z"/><path d="M8 11h6M8 14h3"/></svg>
+          </div>
+          <h3>O app consulta o catálogo</h3>
+          <p>Halla Desktop e Halla Mobile leem <code>api/v1/addons.json</code> direto deste site e comparam com as versões instaladas.</p>
+        </div>
+        <div class="step reveal">
+          <span class="num">02</span>
+          <div class="s-ico">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.4-2.9 8.3-7 9.9C7.9 19.3 5 15.4 5 11V6l7-3Z"/><path d="m9 11.5 2 2 4-4.5"/></svg>
+          </div>
+          <h3>Tudo é validado</h3>
+          <p>Cada pacote <code>.halla-addon</code> é conferido por <code>SHA-256</code> antes de qualquer instalação — se um byte mudar, nada é aplicado.</p>
+        </div>
+        <div class="step reveal">
+          <span class="num">03</span>
+          <div class="s-ico">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 4 14h6l-1 7 9-11h-6l1-7Z"/></svg>
+          </div>
+          <h3>Atualiza sozinho</h3>
+          <p>Novas versões de complementos aparecem no app com um toque de atualizar — o aplicativo em si continua na mesma versão.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section wrap" id="seguranca">
+      <div class="security reveal">
+        <div class="shield">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.4-2.9 8.3-7 9.9C7.9 19.3 5 15.4 5 11V6l7-3Z"/><path d="m9 11.5 2 2 4-4.5"/></svg>
+        </div>
+        <div>
+          <h3>Sobre segurança</h3>
+          <p>Complementos podem incluir código nativo e, por isso, exigem a mesma confiança que você dá ao próprio Halla.
+          Instale apenas pacotes <b>marcados como oficiais</b> ou de autores que você conhece — o aplicativo sempre mostra
+          as <b>permissões exatas</b> (áudio, conexão, interface…) antes de qualquer instalação.</p>
+          <p>Todo download vindo deste site é conferido por <b>SHA-256</b>, e o catálogo consumido pelos aplicativos é
+          versionado em <b>api/v1/</b> — mudanças incompatíveis só entram em uma nova versão, sem quebrar os apps antigos.</p>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <footer>
-    <a href="https://github.com/GroupHalla/Halla-Addons" target="_blank" rel="noopener">Repositório</a> ·
-    <a href="https://github.com/GroupHalla/Halla" target="_blank" rel="noopener">Halla Desktop</a> ·
-    <a href="https://github.com/GroupHalla/Halla-Mobile" target="_blank" rel="noopener">Halla Mobile</a>
+    <div class="wrap foot">
+      <div class="l">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2.6" fill="#a78bfa" stroke="none"/></svg>
+        <span>Halla Addons — oficial do projeto <b style="color:#c4b5fd">Halla</b></span>
+      </div>
+      <div class="links">
+        <a href="api/v1/addons.json" target="_blank" rel="noopener">Catálogo JSON</a>
+        <a href="https://github.com/GroupHalla/Halla-Addons" target="_blank" rel="noopener">Repositório</a>
+        <a href="https://github.com/GroupHalla" target="_blank" rel="noopener">GroupHalla</a>
+      </div>
+    </div>
   </footer>
-</main>
+
+  <div class="backdrop" id="backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal" id="modal"></div>
+  </div>
 
 <script>
-const CAPS = {
-  'connection.read':  'Ler conexões, usuários e canais',
-  'connection.control':'Controlar sua conexão, estado e mensagens',
-  'audio.capture':   'Ler e modificar o áudio do microfone',
-  'audio.playback':  'Ler e modificar vozes recebidas',
-  'audio.spatial':   'Controlar volume, posição 3D e filtros por usuário',
-  'plugin.data':     'Trocar dados do complemento pelo servidor',
-  'ui.notifications':'Mostrar notificações',
-  'ui.actions':      'Adicionar ações e atalhos à interface'
-};
-const ICONS = {
-  'official.radio-voice': '🎙️',
-  'official.talking-overlay': '👁️'
-};
+(function(){
+  'use strict';
 
-fetch('api/v1/addons.json').then(r => r.json()).then(data => {
-  const root = document.getElementById('addons');
-  for (const addon of data.addons) {
-    const card = document.createElement('article');
-    card.className = 'addon';
+  /* ---------- ícones SVG ---------- */
+  var SVG = {
+    desktop:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>',
+    mobile:'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg>',
+    check:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-label="Verificado"><path d="M12 2l2.4 2 3.1-.4 1 3 2.9 1.2-.6 3 .6 3-2.9 1.2-1 3-3.1-.4L12 22l-2.4-2-3.1.4-1-3L2.6 16l.6-3-.6-3 2.9-1.2 1-3 3.1.4L12 2Z" fill="rgba(167,139,250,.16)" stroke-width="1.4"/><path d="m8.6 12.2 2.3 2.3 4.5-5"/></svg>',
+    arrow:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+    lock:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>',
+    dl:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v11M7 10l5 5 5-5M5 20h14"/></svg>',
+    bolt:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 4 14h6l-1 7 9-11h-6l1-7Z"/></svg>',
+    grid:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg>',
+    shield:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.4-2.9 8.3-7 9.9C7.9 19.3 5 15.4 5 11V6l7-3Z"/><path d="m9 11.5 2 2 4-4.5"/></svg>',
+    plat:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="2.5" y="5" width="13" height="11" rx="1.8"/><path d="M7 20h5"/><rect x="17" y="3" width="5" height="12" rx="1.6"/><path d="M19 19h1"/></svg>'
+  };
 
-    const head = document.createElement('div');
-    head.className = 'head';
-    const icon = document.createElement('div');
-    icon.className = 'icon';
-    icon.textContent = ICONS[addon.id] || '🧩';
-    const titles = document.createElement('div');
-    const strong = document.createElement('strong');
-    strong.textContent = addon.name;
-    const meta = document.createElement('span');
-    meta.className = 'meta';
-    meta.textContent = 'v' + addon.version + ' · ' + addon.author;
-    titles.append(strong, meta);
-    head.append(icon, titles);
+  /* ---------- dicionários (mesmos labels do app) ---------- */
+  var CAPS_SHORT = {
+    'audio.capture':'Microfone','audio.playback':'Vozes recebidas','connection.read':'Ler conexão',
+    'connection.control':'Controlar conexão','audio.spatial':'Áudio 3D','plugin.data':'Dados via servidor',
+    'ui.notifications':'Notificações','ui.actions':'Ações na interface'
+  };
+  var CAPS_FULL = {
+    'connection.read':'Ler conexões, usuários e canais','connection.control':'Controlar sua conexão, estado e mensagens',
+    'audio.capture':'Ler e modificar o áudio do microfone','audio.playback':'Ler e modificar vozes recebidas',
+    'audio.spatial':'Controlar volume, posição 3D e filtros por usuário','plugin.data':'Trocar dados do complemento pelo servidor',
+    'ui.notifications':'Mostrar notificações','ui.actions':'Adicionar ações e atalhos à interface'
+  };
+  var CATS = { audio:{label:'Áudio',icon:'🎧'}, interface:{label:'Interface',icon:'🖥️'}, fun:{label:'Diversão',icon:'🎮'}, utility:{label:'Utilitários',icon:'🧰'} };
+  var ICON_BY_CAT = { audio:'🎧', interface:'🖥️', fun:'🎮', utility:'🧰' };
 
-    const tags = document.createElement('div');
-    tags.className = 'tags';
-    if (addon.official) {
-      const t = document.createElement('span');
-      t.className = 'tag official'; t.textContent = '★ Oficial';
-      tags.append(t);
-    }
-    for (const platform of addon.platforms || []) {
-      const t = document.createElement('span');
-      if (platform === 'desktop') { t.className = 'tag desktop'; t.textContent = '🖥️ Desktop'; }
-      else if (platform === 'mobile') { t.className = 'tag mobile'; t.textContent = '📱 Mobile'; }
-      tags.append(t);
-    }
-    const dist = document.createElement('span');
-    if (addon.downloadUrl) { dist.className = 'tag download'; dist.textContent = '⬇ Download disponível'; }
-    else { dist.className = 'tag bundled'; dist.textContent = '● Incluído no aplicativo'; }
-    tags.append(dist);
+  /* ---------- estado ---------- */
+  var state = { q:'', platform:'all', category:'all', sort:'name' };
+  var ADDONS = [];
 
-    const desc = document.createElement('p');
-    desc.className = 'desc';
-    desc.textContent = addon.description;
+  var $ = function(id){ return document.getElementById(id); };
+  var grid=$('grid'), emptyEl=$('empty'), countEl=$('resultcount'), subEl=$('resultsub');
+  var qEl=$('q'), qclear=$('qclear'), activebar=$('activebar'), activetext=$('activetext');
+  var backdrop=$('backdrop'), modal=$('modal'), lastFocus=null;
 
-    card.append(head, tags, desc);
+  /* ---------- utilitários ---------- */
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function fold(s){ return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase(); }
+  function catOf(a){ return CATS[a.category] ? a.category : 'other'; }
+  function catLabel(a){ return a.category==='other'||!CATS[a.category] ? 'Outros' : CATS[a.category].label; }
+  function iconOf(a){ return a.icon || ICON_BY_CAT[a.category] || '🧩'; }
+  function hasPlat(a,p){ return (a.platforms||[]).indexOf(p)>=0; }
+  function bothPlat(a){ return hasPlat(a,'desktop') && hasPlat(a,'mobile'); }
 
-    const caps = addon.capabilities || [];
-    if (caps.length) {
-      const chips = document.createElement('div');
-      chips.className = 'caps';
-      for (const cap of caps) {
-        const chip = document.createElement('span');
-        chip.title = cap;
-        chip.textContent = CAPS[cap] || cap;
-        chips.append(chip);
-      }
-      card.append(chips);
-    }
-
-    if (addon.downloadUrl) {
-      const download = document.createElement('a');
-      download.href = addon.downloadUrl;
-      download.textContent = '⬇ Baixar ' + addon.name;
-      download.style.marginTop = '4px';
-      card.append(download);
-    }
-
-    root.append(card);
+  function hl(text,q){
+    var t = esc(text);
+    if(!q) return t;
+    var f = fold(text), fq = fold(q);
+    if(f.length!==text.length){ return t; }
+    var i = f.indexOf(fq);
+    if(i<0 || !fq) return t;
+    // escapa comprimento igual ao original nos pontos-alvo
+    var raw = text.substring(i, i+fq.length);
+    return esc(text.substring(0,i)) + '<mark>' + esc(raw) + '</mark>' + esc(text.substring(i+fq.length));
   }
-}).catch(() => {
-  const el = document.getElementById('addons');
-  el.textContent = 'Catálogo temporariamente indisponível.';
-  el.className = 'err';
-});
+
+  function scoreOf(a,q){
+    if(!q) return 0;
+    var fq=fold(q), name=fold(a.name||''), id=fold(a.id||''), desc=fold(a.description||''), longd=fold(a.longDescription||''), author=fold(a.author||'');
+    var caps=(a.capabilities||[]).map(function(c){return fold(CAPS_SHORT[c]||'')+' '+fold(CAPS_FULL[c]||'')+' '+fold(c);}).join(' ');
+    if(name.indexOf(fq)===0) return 100;
+    if(name.indexOf(fq)>=0) return 70;
+    if(caps.indexOf(fq)>=0) return 45;
+    if(desc.indexOf(fq)>=0) return 30;
+    if(longd.indexOf(fq)>=0) return 18;
+    if(author.indexOf(fq)>=0 || id.indexOf(fq)>=0) return 12;
+    return -1;
+  }
+
+  /* ---------- busca alvo do addon (para filtro por texto) ---------- */
+  function matches(a){
+    return scoreOf(a, state.q) >= 0;
+  }
+
+  /* ---------- render: estatísticas ---------- */
+  function renderStats(){
+    var plats = {};
+    ADDONS.forEach(function(a){ (a.platforms||[]).forEach(function(p){ plats[p]=1; }); });
+    var nPlat = Object.keys(plats).length;
+    var html =
+      stat(SVG.grid,'<b data-count="'+ADDONS.length+'">0</b> complementos oficiais') +
+      stat(SVG.plat,'<b data-count="'+nPlat+'">0</b> plataformas suportadas') +
+      stat(SVG.shield,'<b data-count="100" data-suffix="%">0</b> validados por SHA-256') +
+      stat(SVG.bolt,'<b>0</b> reinstalações do app');
+    $('stats').innerHTML = html;
+    animateCounters();
+  }
+  function stat(icon,label){
+    return '<div class="stat"><span class="sico">'+icon+'</span><span>'+label+'</span></div>';
+  }
+  function animateCounters(){
+    var els = document.querySelectorAll('#stats b[data-count]');
+    els.forEach(function(el){
+      var target = parseInt(el.getAttribute('data-count'),10)||0, suf = el.getAttribute('data-suffix')||'';
+      var t0=null, dur=900;
+      function tick(ts){
+        if(!t0) t0=ts;
+        var p = Math.min(1,(ts-t0)/dur), e = 1-Math.pow(1-p,3);
+        el.textContent = Math.round(target*e)+suf;
+        if(p<1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+
+  /* ---------- render: chips ---------- */
+  function renderChips(){
+    var counts = { all:ADDONS.length, desktop:0, mobile:0, both:0 };
+    ADDONS.forEach(function(a){
+      if(hasPlat(a,'desktop')) counts.desktop++;
+      if(hasPlat(a,'mobile')) counts.mobile++;
+      if(bothPlat(a)) counts.both++;
+    });
+    var defs = [
+      ['all',SVG.grid+' Todos',''], ['desktop',SVG.desktop+' Desktop',''],['mobile',SVG.mobile+' Mobile',''],['both','⇄ Ambos','']
+    ];
+    $('seg-platform').innerHTML = defs.map(function(d){
+      return '<button type="button" class="chip'+(state.platform===d[0]?' active':'')+'" data-plat="'+d[0]+'">'+d[1]+'<span class="n">'+counts[d[0]]+'</span></button>';
+    }).join('');
+
+    var catCount = {};
+    ADDONS.forEach(function(a){ var c=catOf(a); catCount[c]=(catCount[c]||0)+1; });
+    var catDefs = [['all','Todas',ADDONS.length]];
+    Object.keys(CATS).forEach(function(c){ if(catCount[c]) catDefs.push([c,CATS[c].label,catCount[c]]); });
+    if(catCount.other) catDefs.push(['other','Outros',catCount.other]);
+    $('seg-category').innerHTML = catDefs.map(function(d){
+      return '<button type="button" class="chip'+(state.category===d[0]?' active':'')+'" data-cat="'+d[0]+'">'+d[1]+'<span class="n">'+d[2]+'</span></button>';
+    }).join('');
+  }
+
+  /* ---------- render: cards ---------- */
+  function filtered(){
+    var out = ADDONS.filter(function(a){
+      if(state.platform==='desktop' && !hasPlat(a,'desktop')) return false;
+      if(state.platform==='mobile' && !hasPlat(a,'mobile')) return false;
+      if(state.platform==='both' && !bothPlat(a)) return false;
+      if(state.category!=='all' && catOf(a)!==state.category) return false;
+      return matches(a);
+    });
+    var q = state.q;
+    out.sort(function(a,b){
+      if(q){ var s=scoreOf(b,q)-scoreOf(a,q); if(s) return s; }
+      if(state.sort==='name') return String(a.name||'').localeCompare(String(b.name||''),'pt-BR');
+      if(state.sort==='recent'){ var v=cmpVer(b.version,a.version); if(v) return v; return String(a.name||'').localeCompare(String(b.name||''),'pt-BR'); }
+      if(state.sort==='platform'){ var d=(b.platforms||[]).length-(a.platforms||[]).length; if(d) return d; return String(a.name||'').localeCompare(String(b.name||''),'pt-BR'); }
+      return 0;
+    });
+    return out;
+  }
+  function cmpVer(a,b){
+    var pa=String(a||'0').split('.'), pb=String(b||'0').split('.');
+    for(var i=0;i<3;i++){ var x=parseInt(pa[i]||0,10), y=parseInt(pb[i]||0,10); if(x!==y) return x-y; }
+    return 0;
+  }
+
+  function cardHtml(a,i){
+    var caps = a.capabilities||[];
+    var capChips = caps.slice(0,3).map(function(c){ return '<span class="cap-chip">'+esc(CAPS_SHORT[c]||c)+'</span>'; }).join('');
+    if(caps.length>3) capChips += '<span class="cap-chip">+'+(caps.length-3)+'</span>';
+    var pl = '';
+    if(hasPlat(a,'desktop')) pl += '<span class="pl-badge desktop">'+SVG.desktop+' Desktop</span>';
+    if(hasPlat(a,'mobile')) pl += '<span class="pl-badge mobile">'+SVG.mobile+' Mobile</span>';
+    var dist = (a.downloadUrl && a.distribution!=='bundled')
+      ? '<span class="pl-badge downloadable">⬇ Download</span>'
+      : '<span class="pl-badge bundled">● Incluído no app</span>';
+    return '<article class="card" data-id="'+esc(a.id)+'" tabindex="0" role="button" aria-label="Detalhes de '+esc(a.name)+'" style="--i:'+i+'">'
+      + '<div class="card-head">'
+      +   '<span class="ico cat-'+esc(catOf(a))+'">'+esc(iconOf(a))+'</span>'
+      +   '<div class="card-id">'
+      +     '<div class="card-name"><span>'+hl(a.name,state.q)+'</span>'+(a.official?SVG.check:'')+'</div>'
+      +     '<div class="card-by">por '+esc(a.author||'—')+' <span class="ver">v'+esc(a.version||'1.0.0')+'</span></div>'
+      +   '</div>'
+      + '</div>'
+      + '<p class="card-desc">'+hl(a.description||'',state.q)+'</p>'
+      + (capChips?'<div class="caps">'+capChips+'</div>':'')
+      + '<div class="card-foot">'+pl+dist+'<span class="card-arrow">'+SVG.arrow+'</span></div>'
+      + '</article>';
+  }
+
+  function render(){
+    var list = filtered();
+    grid.innerHTML = list.map(cardHtml).join('');
+    emptyEl.classList.toggle('show', list.length===0);
+    if(list.length===0){
+      $('trychips').innerHTML = ADDONS.slice(0,4).map(function(a){
+        return '<button type="button" class="chip" data-try="'+esc(a.name)+'">'+esc(iconOf(a))+' '+esc(a.name)+'</button>';
+      }).join('');
+    }
+    countEl.textContent = list.length===1 ? '1 complemento' : list.length+' complementos';
+    var filtering = state.q || state.platform!=='all' || state.category!=='all';
+    subEl.textContent = filtering ? 'Filtrando '+list.length+' de '+ADDONS.length+' complementos do catálogo.' : 'Filtre por plataforma ou categoria, ou pesquise acima.';
+
+    var parts = [];
+    if(state.q) parts.push('Busca: “'+state.q+'”');
+    if(state.platform!=='all') parts.push('Plataforma: '+(state.platform==='both'?'Ambos':state.platform==='desktop'?'Desktop':'Mobile'));
+    if(state.category!=='all') parts.push('Categoria: '+(CATS[state.category]?CATS[state.category].label:'Outros'));
+    activebar.classList.toggle('show', parts.length>0);
+    activetext.textContent = parts.join(' · ');
+    qclear.classList.toggle('show', !!state.q);
+    renderChips();
+    writeHash();
+  }
+
+  /* ---------- modal ---------- */
+  function openModal(a){
+    lastFocus = document.activeElement;
+    var caps = a.capabilities||[];
+    var perms = caps.length
+      ? caps.map(function(c){ return '<div class="perm">'+SVG.lock+'<span><b style="color:#d6d2f0">'+esc(CAPS_SHORT[c]||c)+'</b><br>'+esc(CAPS_FULL[c]||c)+'</span></div>'; }).join('')
+      : '<div class="perm">'+SVG.lock+'<span>Sem permissões especiais</span></div>';
+    var badges = '<span class="tagpill official">★ Oficial</span>'
+      + (hasPlat(a,'desktop')?'<span class="tagpill desktop">'+SVG.desktop+' Desktop</span>':'')
+      + (hasPlat(a,'mobile')?'<span class="tagpill mobile">'+SVG.mobile+' Mobile</span>':'')
+      + '<span class="tagpill version">v'+esc(a.version||'1.0.0')+'</span>';
+    var steps = (a.setupSteps&&a.setupSteps.length) ? a.setupSteps : ['Abra o Halla e vá em Ferramentas → Complementos','Localize o complemento na lista','Ative o interruptor'];
+    var hls = (a.highlights&&a.highlights.length) ? '<ul class="hl">'+a.highlights.map(function(h){return '<li>'+esc(h)+'</li>';}).join('')+'</ul>' : '';
+    var dist = (a.downloadUrl && a.distribution!=='bundled')
+      ? '<div class="dist-note dl">'+SVG.dl+'<span>Pacote disponível para download — o aplicativo confere o SHA-256 antes de instalar.<br><code>'+esc(String(a.sha256||'').substring(0,24))+'…</code></span></div>'
+        + '<a class="dl-btn" href="'+esc(a.downloadUrl)+'" download>'+SVG.dl+' Baixar .halla-addon</a>'
+      : '<div class="dist-note">'+SVG.shield+'<span>Este complemento <b>já vem incluído</b> no Halla — basta ativá-lo nas configurações de Complementos. Futuras versões pela central serão aplicadas automaticamente.</span></div>';
+    modal.innerHTML =
+      '<button class="modal-close" id="mclose" type="button" aria-label="Fechar">✕</button>'
+      + '<div class="modal-head">'
+      +   '<span class="ico cat-'+esc(catOf(a))+'">'+esc(iconOf(a))+'</span>'
+      +   '<div><h3 class="modal-title" id="modal-title">'+esc(a.name)+(a.official?SVG.check:'')+'</h3>'
+      +   '<div class="modal-by">por '+esc(a.author||'—')+' · '+esc(catLabel(a))+'</div></div>'
+      + '</div>'
+      + '<div class="modal-badges">'+badges+'</div>'
+      + '<p class="modal-desc">'+esc(a.longDescription||a.description||'')+'</p>'
+      + (hls?'<h4>Destaques</h4>'+hls:'')
+      + '<h4>Permissões</h4><div class="perms">'+perms+'</div>'
+      + '<h4>Como ativar</h4><ol class="setup">'+steps.map(function(s){return '<li>'+esc(s)+'</li>';}).join('')+'</ol>'
+      + '<h4>Disponibilidade</h4>'+dist;
+    backdrop.classList.add('open');
+    document.body.style.overflow='hidden';
+    $('mclose').addEventListener('click',closeModal);
+    var btn = modal.querySelector('.dl-btn'); if(btn) btn.addEventListener('click',function(e){e.stopPropagation();});
+    $('mclose').focus();
+  }
+  function closeModal(){
+    backdrop.classList.remove('open');
+    document.body.style.overflow='';
+    if(lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  /* ---------- hash na URL (link compartilhável) ---------- */
+  function writeHash(){
+    var p = new URLSearchParams();
+    if(state.q) p.set('q',state.q);
+    if(state.platform!=='all') p.set('pl',state.platform);
+    if(state.category!=='all') p.set('cat',state.category);
+    if(state.sort!=='name') p.set('sort',state.sort);
+    var h = p.toString();
+    history.replaceState(null,'', h ? '#'+h : location.pathname+location.search);
+  }
+  function readHash(){
+    try{
+      var p = new URLSearchParams(location.hash.replace(/^#/,''));
+      if(p.get('q')) state.q=p.get('q');
+      if(['desktop','mobile','both'].indexOf(p.get('pl'))>=0) state.platform=p.get('pl');
+      var c=p.get('cat');
+      if(c && (c==='all'||c==='other'||CATS[c])) state.category=c;
+      if(['name','recent','platform'].indexOf(p.get('sort'))>=0) state.sort=p.get('sort');
+    }catch(e){}
+  }
+
+  /* ---------- eventos ---------- */
+  var debounceT=null;
+  qEl.addEventListener('input',function(){
+    clearTimeout(debounceT);
+    debounceT=setTimeout(function(){ state.q=qEl.value.trim(); render(); },130);
+  });
+  qclear.addEventListener('click',function(){ state.q=''; qEl.value=''; render(); qEl.focus(); });
+
+  document.addEventListener('click',function(e){
+    var chip=e.target.closest('[data-plat]');
+    if(chip){ state.platform=chip.getAttribute('data-plat'); render(); return; }
+    var cchip=e.target.closest('[data-cat]');
+    if(cchip){ state.category=cchip.getAttribute('data-cat'); render(); return; }
+    var tryc=e.target.closest('[data-try]');
+    if(tryc){ state.q=tryc.getAttribute('data-try'); qEl.value=state.q; render(); return; }
+    var card=e.target.closest('.card');
+    if(card){
+      var a=ADDONS.filter(function(x){return x.id===card.getAttribute('data-id');})[0];
+      if(a) openModal(a);
+      return;
+    }
+    if(e.target===backdrop) closeModal();
+  });
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'){
+      if(backdrop.classList.contains('open')) closeModal();
+      else if(document.activeElement===qEl || qEl.value){ state.q=''; qEl.value=''; render(); }
+      return;
+    }
+    if(e.key==='/' && document.activeElement!==qEl && !/input|textarea|select/i.test(document.activeElement.tagName)){
+      e.preventDefault(); qEl.focus();
+    }
+    if(e.key==='Enter' && document.activeElement && document.activeElement.closest && document.activeElement.closest('.card')){
+      document.activeElement.click();
+    }
+  });
+  $('sort').addEventListener('change',function(){ state.sort=this.value; render(); });
+  $('clearall').addEventListener('click',function(){
+    state.q=''; state.platform='all'; state.category='all'; qEl.value='';
+    render(); window.scrollTo({top:document.getElementById('catalogo').offsetTop-90,behavior:'smooth'});
+  });
+
+  /* card por teclado */
+  grid.addEventListener('keydown',function(e){
+    if(e.key==='Enter'||e.key===' '){
+      var card=e.target.closest('.card');
+      if(card){ e.preventDefault(); card.click(); }
+    }
+  });
+
+  /* reveal ao rolar */
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+    },{threshold:.12});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  /* ---------- boot ---------- */
+  readHash();
+  if(state.q) qEl.value=state.q;
+  $('sort').value=state.sort;
+
+  fetch('api/v1/addons.json',{cache:'no-cache'})
+    .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+    .then(function(data){
+      ADDONS=(data&&data.addons)||[];
+      renderStats(); render();
+    })
+    .catch(function(){
+      grid.innerHTML='<p class="err" style="color:#fda4af;grid-column:1/-1;text-align:center;padding:40px 0">Não foi possível carregar o catálogo — recarregue a página em instantes.</p>';
+      countEl.textContent='—';
+    });
+})();
 </script>
 </body>
 </html>

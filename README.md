@@ -19,10 +19,16 @@ Todo pacote é validado por **SHA-256** antes da instalação.
 ## Estrutura
 
 ```
-index.html            Landing page (GitHub Pages)
-api/v1/addons.json    Catálogo consumido pelos aplicativos (versão 1)
+index.html            Site do catálogo (busca, filtros por plataforma/categoria, detalhes)
+api/v1/addons.json    Catálogo consumido pelos aplicativos e pelo site (versão 1)
 addons/               Pacotes .halla-addon publicados + checksums
 ```
+
+O site é um arquivo único sem dependências de build: ele lê o próprio
+`api/v1/addons.json` e renderiza busca (sem acento também), filtros por
+plataforma (Todos/Desktop/Mobile/Ambos), por categoria, ordenação e a página de
+detalhes de cada complemento. Os filtros entram no hash da URL — por exemplo,
+`#pl=mobile&cat=audio` — então dá para compartilhar links já filtrados.
 
 ## Formato do catálogo (v1)
 
@@ -41,6 +47,11 @@ addons/               Pacotes .halla-addon publicados + checksums
       "platforms": ["desktop", "mobile"],
       "distribution": "bundled",
       "capabilities": ["audio.capture", "audio.playback"],
+      "category": "audio",
+      "icon": "📻",
+      "longDescription": "...",
+      "highlights": ["..."],
+      "setupSteps": ["..."],
       "downloadUrl": null,
       "sha256": null
     }
@@ -56,6 +67,10 @@ Campos:
   a URL deve ser HTTPS e o SHA-256 (64 hex) corresponde ao arquivo `.halla-addon`.
 - `capabilities` — permissões declaradas pelo manifesto do pacote
   (mesmas da API de plugins documentada em `docs/PLUGINS.md` do repositório Halla).
+- `category` (site) — categoria de exibição: `audio`, `interface`, `fun`, `utility`.
+- `icon` (site) — emoji usado no card do catálogo (opcional; existe fallback por categoria).
+- `longDescription`, `highlights`, `setupSteps` (site) — textos opcionais da página de
+  detalhes; ausentes, o site usa a `description` e passos genéricos.
 
 Novos campos são adicionados de forma retrocompatível; mudanças incompatíveis
 abrem um novo caminho versionado (`api/v2/...`) mantendo o anterior disponível.

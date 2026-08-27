@@ -1,7 +1,7 @@
 {
   "version": 1,
   "catalog": "halla-addons",
-  "generatedAt": "2026-08-28T12:00:00Z",
+  "generatedAt": "2026-08-28T21:30:00Z",
   "addons": [
     {
       "id": "official.radio-voice",
@@ -13,6 +13,19 @@
       "platforms": ["desktop", "mobile"],
       "distribution": "bundled",
       "capabilities": ["audio.capture", "audio.playback"],
+      "category": "audio",
+      "icon": "📻",
+      "longDescription": "Transforma a sua voz em um rádio policial autêntico: filtro de banda estreita, ruído de estática e o clássico squelch no fim de cada transmissão. O efeito é aplicado nos dois sentidos — no seu microfone (o que as outras pessoas ouvem) e nas vozes que você recebe (o que você ouve) — com intensidade e comportamento independentes para fala normal e para sussurros.",
+      "highlights": [
+        "Efeito duplo: microfone e vozes recebidas",
+        "Regras separadas para fala e sussurro",
+        "Intensidade ajustável nas configurações de Complementos"
+      ],
+      "setupSteps": [
+        "Abra o Halla e vá em Ferramentas → Complementos",
+        "Localize “Voz de rádio policial” na lista de oficiais",
+        "Ative o interruptor e ajuste a intensidade"
+      ],
       "downloadUrl": null,
       "sha256": null
     },
@@ -26,6 +39,19 @@
       "platforms": ["desktop"],
       "distribution": "bundled",
       "capabilities": ["connection.read"],
+      "category": "interface",
+      "icon": "💬",
+      "longDescription": "Uma janela translúcida sempre visível sobre o jogo mostra quem está na call e destaca em tempo real quem está falando ou sussurrando. Você acompanha tudo sem dar alt-tab: os nomes acendem conforme a conversa flui, direto na sua tela.",
+      "highlights": [
+        "Janela translúcida sobre o jogo, sem alt-tab",
+        "Destaque em tempo real de quem fala ou sussurro",
+        "Posição e opacidade configuráveis"
+      ],
+      "setupSteps": [
+        "Abra o Halla Desktop e vá em Ferramentas → Complementos",
+        "Ative “Overlay oficial da call”",
+        "Posicione a janela onde preferir e jogue"
+      ],
       "downloadUrl": null,
       "sha256": null
     }
