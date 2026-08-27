@@ -6,7 +6,7 @@
     {
       "id": "official.radio-voice",
       "name": "Voz de rádio policial",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "author": "Halla-DEV",
       "description": "Simula um comunicador policial no microfone e nas vozes recebidas, com regras separadas para fala normal e sussurros.",
       "official": true,
@@ -14,27 +14,29 @@
         "desktop",
         "mobile"
       ],
-      "distribution": "bundled",
+      "distribution": "download",
       "capabilities": [
         "audio.capture",
         "audio.playback"
       ],
       "category": "audio",
       "icon": "📻",
-      "longDescription": "Transforma a sua voz em um rádio policial de verdade: compressão de microfone que deixa a voz sempre no talo, banda estreita de transceptor, distorção de transmissor saturado, ressonância de alto-falante pequeno, estática limitada à banda com estalos de propagação e o clássico squelch — click ao abrir o canal e rajada com bipe no fim de cada transmissão. Aplicado nos dois sentidos, no seu microfone e nas vozes recebidas, com intensidade e comportamento independentes para fala normal e sussurros.",
+      "longDescription": "Transforma a sua voz em um rádio policial de verdade: compressão de microfone que deixa a voz sempre no talo, banda estreita de transceptor, distorção de transmissor saturado, ressonância de alto-falante pequeno, estática limitada à banda com estalos de propagação e o clássico squelch — click ao abrir o canal e rajada com bipe no fim de cada transmissão. Aplicado nos dois sentidos, no seu microfone e nas vozes recebidas, com intensidade e comportamento independentes para fala normal e sussurros. É distribuído em pacote .halla-addon: instalado pelo catálogo, substitui o complemento embutido no aplicativo — e é por aqui que o filtro ganha melhorias sem precisar de uma nova versão do Halla.",
       "highlights": [
         "AGC de microfone: voz sempre no mesmo volume, como num rádio",
         "Banda estreita + distorção + ressonância de radinho",
         "Squelch com click de abertura e rajada com bipe no fechamento",
-        "Efeito duplo: microfone e vozes recebidas, com regras separadas para fala e sussurro"
+        "Efeito duplo: microfone e vozes recebidas, com regras separadas para fala e sussurro",
+        "Atualiza pelo catálogo, sem reinstalar o aplicativo"
       ],
       "setupSteps": [
-        "Abra o Halla e vá em Ferramentas → Complementos",
-        "Localize “Voz de rádio policial” na lista de oficiais",
-        "Ative o interruptor e ajuste a intensidade"
+        "Desktop: Ferramentas → Complementos → “Procurar complementos online”",
+        "Mobile: Configurações → Complementos → “Catálogo online”",
+        "Selecione “Voz de rádio policial” e clique em Atualizar/Instalar",
+        "Ative o complemento e ajuste a intensidade"
       ],
-      "downloadUrl": null,
-      "sha256": null
+      "downloadUrl": "https://grouphalla.github.io/Halla-Addons/addons/official-radio-voice/official-radio-voice-1.1.1.halla-addon",
+      "sha256": "90b28126fcabbb9a59e2fa6d24f3342fe59799b013b524083d99c3761fa0d215"
     },
     {
       "id": "official.talking-overlay",
